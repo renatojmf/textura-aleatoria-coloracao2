@@ -78,6 +78,20 @@ public class Point {
         this.numTriangles++;
     }
 
+    public void addNormal(double x, double y, double z) {
+        this.x_normal = (this.x_normal + x) / this.numTriangles;
+        this.y_normal = (this.y_normal + y) / this.numTriangles;
+        this.z_normal = (this.z_normal + z) / this.numTriangles;
+    }
+
+    public void normalizeNormal() {
+        Point normal = new Point(this.x_normal, this.y_normal, this.z_normal).normalize();
+
+        this.x_normal = normal.getX();
+        this.y_normal = normal.getY();
+        this.z_normal = normal.getZ();
+    }
+
     /* Getters & Setters */
     public double getX() {
         return x;

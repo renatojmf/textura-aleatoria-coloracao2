@@ -36,6 +36,7 @@ public class Main extends Application {
             SceneObject object = loader.loadObject(camera.worldToView(), camera.getCoordinates());
             
             /* Cálculo das normais e normalização */
+            object.normalize();
 
             root.getChildren().add(canvas);
             primaryStage.show();
