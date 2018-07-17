@@ -35,11 +35,14 @@ public class Main extends Application {
             Illumination illumination = loader.loadScene(camera.worldToView(), camera.getCoordinates());
             SceneObject object = loader.loadObject(camera.worldToView(), camera.getCoordinates());
             
-            /* Cálculo das normais e normalização */
+            /* Cálculo das normais e normalização. */
             object.normalize();
 
             /* Inicialização do Z-Buffer. */
             double[][] zBuffer = initializeZBuffer();
+
+            /* Projeção para a tela, rasterização e iluminação. */
+            object.finalSteps(camera, illumination, screenWidth, screenHeight);
 
             root.getChildren().add(canvas);
             primaryStage.show();
@@ -66,7 +69,7 @@ public class Main extends Application {
     }
 
     public double[][] initializeZBuffer() {
-        double[][] buffer = new double[screenWidth][screenHeight];
+        double[][] buffer = new double[(int) screenWidth][(int) screenHeight];
         for (int i = 0; i < buffer.length; i++)
             for (int j = 0; j < buffer[i].length; j++) 
                 buffer[i][j] = Double.MAX_VALUE;

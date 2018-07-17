@@ -17,5 +17,18 @@ public class SceneObject {
             this.triangles[i].normalizeNormal();
 
     }
+
+    /* Passos finais. */
+    public void finalSteps(Camera camera, Illumination scene, double width, double height) {
+
+        for (int i = 0; i < this.triangles.length; i++) {
+            
+            /* Projeção para coordenadas de tela. */
+            Pixel[] projectedVertices = this.triangles[i].projectVertices(camera.getD(), camera.getHx(), camera.getHy(), width, height);
+
+        }
+        
+
+    }
     
 }

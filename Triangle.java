@@ -34,4 +34,14 @@ public class Triangle {
             this.vertices[i].normalizeNormal();
         }
     }
+
+    public Pixel[] projectVertices(double d, double hx, double hy, double width, double height) {
+        Pixel[] projectedVertices = new Pixel[3];
+        for (int i = 0; i < this.vertices.length; i++) {
+            double x = ((d/hx) * vertices[i].getX()/vertices[i].getZ());
+            double y = ((d/hy) * vertices[i].getY()/vertices[i].getZ());
+            projectedVertices[i] = new Pixel((int) ((x + 1) * width / 2), (int) ((1 - y) * height / 2));
+        }
+        return projectedVertices;
+    }
 }
