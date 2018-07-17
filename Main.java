@@ -29,7 +29,7 @@ public class Main extends Application {
             final Canvas canvas = new Canvas(screenWidth, screenHeight);
             GraphicsContext context = canvas.getGraphicsContext2D();
 
-            /* Carregamento dos arquivos. */
+            /* Carregamento dos arquivos e projeção para coordenadas de vista. */
             Loader loader = new Loader("../iluminacao.txt", "../camera.cfg", "../tui.byu");
             Camera camera = loader.loadCamera();
             Illumination illumination = loader.loadScene(camera.worldToView(), camera.getCoordinates());
@@ -37,6 +37,9 @@ public class Main extends Application {
             
             /* Cálculo das normais e normalização */
             object.normalize();
+
+            /* Inicialização do Z-Buffer. */
+            double[][] zBuffer = initializeZBuffer();
 
             root.getChildren().add(canvas);
             primaryStage.show();
@@ -60,6 +63,15 @@ public class Main extends Application {
             if(KeyCode.ESCAPE == event.getCode())
                 primaryStage.close();
         });
+    }
+
+    public double[][] initializeZBuffer() {
+        double[][] buffer = new double[screenWidth][screenHeight];
+        for (int i = 0; i < buffer.length; i++)
+            for (int j = 0; j < buffer[i].length; j++) 
+                buffer[i][j] = Double.MAX_VALUE;
+
+        return buffer;
     }
     
 }

@@ -17,7 +17,8 @@ public class Loader {
 
     public Illumination loadScene(double[][] worldToView, Point C) {
         try {
-            Scanner file = new Scanner(new File(this.scenePath)).useLocale(Locale.US);
+            Scanner file = new Scanner(new File(this.scenePath));
+            file.useLocale(Locale.US);
 
             Point coordinates = new Point(file.nextDouble(), file.nextDouble(), file.nextDouble());
             double ka = file.nextDouble();
