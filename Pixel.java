@@ -9,6 +9,14 @@ public class Pixel {
         this.y = y;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public void printPoint() {
         System.out.println(x + " " + y);
     }

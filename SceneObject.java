@@ -1,3 +1,4 @@
+import java.util.Vector;
 
 public class SceneObject {
 
@@ -26,6 +27,8 @@ public class SceneObject {
             /* Projeção para coordenadas de tela. */
             Pixel[] projectedVertices = this.triangles[i].projectVertices(camera.getD(), camera.getHx(), camera.getHy(), width, height);
 
+            /* Rasterização. */
+            Vector<Pixel> internPixels = new Rasterizer(projectedVertices).rasterize();
         }
         
 
