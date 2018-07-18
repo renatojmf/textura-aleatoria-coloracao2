@@ -44,4 +44,10 @@ public class Triangle {
         }
         return projectedVertices;
     }
+
+    public Point approximate(double[] coordinates) {
+        return this.vertices[0].multiply(coordinates[0])
+            .add(this.vertices[1].multiply(coordinates[1]))
+            .add(this.vertices[2].multiply(coordinates[2]));
+    }
 }

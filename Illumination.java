@@ -1,3 +1,5 @@
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Illumination {
 
@@ -19,6 +21,19 @@ public class Illumination {
         this.specularConstant = ks;
         this.lightIntensity = Il;
         this.rugosityConstant = n;
+    }
+
+    public void illuminate(Pixel pixel, Point point, GraphicsContext ctx, Camera camera, double[][] zBuffer,
+        double width, double height) {
+        
+        Point N, L, V, R = null;
+        int x = pixel.getX();
+        int y = pixel.getY();    
+
+        if(x >= 0 && x < width && y >= 0 && y < height) {
+
+
+        }
     }
     
 

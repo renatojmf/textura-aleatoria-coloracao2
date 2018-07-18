@@ -42,7 +42,7 @@ public class Main extends Application {
             double[][] zBuffer = initializeZBuffer();
 
             /* Projeção para a tela, rasterização e iluminação. */
-            object.finalSteps(camera, illumination, screenWidth, screenHeight);
+            object.finalSteps(camera, illumination, screenWidth, screenHeight, context, zBuffer);
 
             root.getChildren().add(canvas);
             primaryStage.show();
