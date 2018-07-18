@@ -50,4 +50,10 @@ public class Triangle {
             .add(this.vertices[1].multiply(coordinates[1]))
             .add(this.vertices[2].multiply(coordinates[2]));
     }
+
+    public Point approximateNormal(double[] coordinates) {
+        return this.vertices[0].getNormal().multiply(coordinates[0])
+            .add(this.vertices[1].getNormal().multiply(coordinates[1]))
+            .add(this.vertices[2].getNormal().multiply(coordinates[2]));
+    }
 }

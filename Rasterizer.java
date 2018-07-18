@@ -68,7 +68,7 @@ public class Rasterizer {
         if(!AET.isEmpty()) {
             int xMin = AET.firstElement().getX();
             int xMax = AET.lastElement().getX();
-           // System.out.println(xMin + " " + xMax);
+            //System.out.println(xMin + " " + xMax);
 
             for (int i = xMin; i <= xMax; i++) {
                 pixels.add(new Pixel(i, scanline));

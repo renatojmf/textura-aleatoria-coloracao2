@@ -104,4 +104,8 @@ public class Point {
     public double getZ() {
         return z;
     }
+
+    public Point getNormal() {
+        return new Point(this.x_normal, this.y_normal, this.z_normal);
+    }
 }

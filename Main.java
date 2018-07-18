@@ -23,7 +23,7 @@ public class Main extends Application {
         try {
             
             BorderPane root = new BorderPane();
-            Scene scene = new Scene(root, Color.BLACK);
+            Scene scene = new Scene(root);
             definePrimaryStage(scene, primaryStage);
 
             final Canvas canvas = new Canvas(screenWidth, screenHeight);

@@ -35,9 +35,10 @@ public class SceneObject {
 
                 double[] barycentricCoordinates = this.resolve(internPixels.get(j), projectedVertices);
                 Point approximation = this.triangles[i].approximate(barycentricCoordinates);
+                Point normalApproximation = this.triangles[i].approximateNormal(barycentricCoordinates);
 
                 /* Iluminação. */
-                scene.illuminate(internPixels.get(j), approximation, ctx, camera, zBuffer, width, height);
+                scene.illuminate(internPixels.get(j), approximation, normalApproximation, ctx, camera, zBuffer, width, height);
             }
             
         }
