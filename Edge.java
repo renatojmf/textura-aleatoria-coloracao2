@@ -6,11 +6,11 @@
 
 public class Edge {
 
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private double dx;
     
-    public Edge(int x, int y, double dx) {
+    public Edge(double x, double y, double dx) {
         this.x = x;
         this.y = y;
         this.dx = dx;
@@ -20,16 +20,20 @@ public class Edge {
         return this.dx;
     }
 
-    public int getX() {
+    public double getX() {
         return this.x;
     }
 
-    public int getY() {
+    public double getY() {
         return this.y;
     }
 
     public void increaseX() {
-        this.x = (int) Math.round(x + this.dx);
+        this.x = x + this.dx;
+    }
+
+    public void decreaseY() {
+        this.y -= 1;
     }
 
     public void printEdge() {

@@ -81,9 +81,9 @@ public class Point {
     }
 
     public void addNormal(double x, double y, double z) {
-        this.x_normal = (this.x_normal + x) / this.numTriangles;
-        this.y_normal = (this.y_normal + y) / this.numTriangles;
-        this.z_normal = (this.z_normal + z) / this.numTriangles;
+        this.x_normal = (this.x_normal + x);
+        this.y_normal = (this.y_normal + y);
+        this.z_normal = (this.z_normal + z);
     }
 
     public void normalizeNormal() {

@@ -18,7 +18,7 @@ public class Triangle {
     public void calculateNormal() {
         Point v1v0 = this.vertices[1].subtract(this.vertices[0]);
         Point v2v0 = this.vertices[2].subtract(this.vertices[0]);
-        Point normal = v2v0.vectorProduct(v1v0).normalize();
+        Point normal = v1v0.vectorProduct(v2v0).normalize();
 
         this.x_normal = normal.getX();
         this.y_normal = normal.getY();
@@ -43,7 +43,7 @@ public class Triangle {
         for (int i = 0; i < this.vertices.length; i++) {
             double x = (d/hx * vertices[i].getX()/vertices[i].getZ());
             double y = (d/hy * vertices[i].getY()/vertices[i].getZ());  
-            projectedVertices[i] = new Pixel((int) Math.round((x + 1) * width / 2), (int) Math.round((1 - y) * height / 2));
+            projectedVertices[i] = new Pixel((int) Math.floor((x + 1) * width / 2), (int) Math.floor((1 - y) * height / 2));
         }
         return projectedVertices;
     }
@@ -69,7 +69,6 @@ public class Triangle {
         /* Gama. */
         double abpArea = 1 - pbcArea - apcArea;
         
-    //    System.out.println(area);
         return new double[] { pbcArea, apcArea, abpArea };        
     }
 
@@ -80,13 +79,6 @@ public class Triangle {
     }
 
     public Point approximateNormal(double[] coordinates) {
-        // this.vertices[0].getNormal().printPoint();
-        // this.vertices[1].getNormal().printPoint();
-        // this.vertices[2].getNormal().printPoint();
-        // for (int i = 0; i < coordinates.length; i++) {
-        //     System.out.print(coordinates[i] + " ");
-        // }
-        // System.exit(1);
         return this.vertices[0].getNormal().multiply(coordinates[0])
             .add(this.vertices[1].getNormal().multiply(coordinates[1]))
             .add(this.vertices[2].getNormal().multiply(coordinates[2]));

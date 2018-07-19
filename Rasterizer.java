@@ -19,13 +19,13 @@ public class Rasterizer {
         /* Scanline Conversion */
         Vector<Edge> activeEdgeTable = new Vector<Edge>();
         int range = vertices[2].getY() - vertices[0].getY();
-        for (int i = 0; i <= range; i++) {
-            
-            this.update(activeEdgeTable, i + vertices[0].getY());
-            this.append(activeEdgeTable, edgeTable[i], pixels);
-            this.sortAET(activeEdgeTable);
+        for (int i = 0; i < range; i++) {
+            this.append(activeEdgeTable, edgeTable[i]);
             pixels.addAll(this.retrievePixels(activeEdgeTable, i + vertices[0].getY()));
-            
+
+            this.update(activeEdgeTable, i + vertices[0].getY());
+            this.sortAET(activeEdgeTable);
+
         }
 
         return pixels;
@@ -45,18 +45,8 @@ public class Rasterizer {
         }
     }
 
-    public void append(Vector<Edge> AET, Vector<Edge> ET, Vector<Pixel> pixels) {
+    public void append(Vector<Edge> AET, Vector<Edge> ET) {
         if(ET != null) {
-
-            // Tratando arestas horizontais.
-            for (int i = 0; i < ET.size(); i++) 
-                if(ET.get(i).getDx() == Double.POSITIVE_INFINITY) {
-                    Vector<Edge> horizontal = new Vector<Edge>();
-                    horizontal.add(ET.get(i));
-                    pixels.addAll(this.retrievePixels(horizontal, ET.get(i).getY()));
-                    ET.remove(i);
-                    i--;
-                }
             AET.addAll(ET);
         }
     }
@@ -79,11 +69,11 @@ public class Rasterizer {
 
         Vector<Pixel> pixels = new Vector<Pixel>();
         if(!AET.isEmpty()) {
-            int xMin = AET.firstElement().getX();
-            int xMax = AET.lastElement().getX();
+            int xMin = (int) Math.floor(AET.firstElement().getX());
+            int xMax = (int) Math.floor(AET.lastElement().getX());
             //System.out.println(xMin + " " + xMax);
 
-            for (int i = xMin; i <= xMax; i++) {
+            for (int i = xMin; i < xMax; i++) {
                 pixels.add(new Pixel(i, scanline));
             }
          
@@ -133,11 +123,10 @@ public class Rasterizer {
         ET[v0.getY() - range] = new Vector<Edge>();
         ET[v0.getY() - range].add(v1v0);
         ET[v0.getY() - range].add(v2v0);
-        if(v1.getY() == v0.getY())
-            ET[v1.getY() - range].add(v2v1);
-        else {
+        if(v1.getY() != v0.getY()) {
             ET[v1.getY() - range] = new Vector<Edge>();
             ET[v1.getY() - range].add(v2v1);
+            v1v0.decreaseY();
         }
         return ET;
     }

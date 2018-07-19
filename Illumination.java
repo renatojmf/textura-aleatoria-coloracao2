@@ -101,19 +101,19 @@ public class Illumination {
         if(I.getX() > 255)
             R = 255;
         else
-            R = (int) Math.round(I.getX());
+            R = (int) Math.floor(I.getX());
 
         int G;
         if(I.getY() > 255)
             G = 255;
         else
-            G = (int) Math.round(I.getY());
+            G = (int) Math.floor(I.getY());
 
         int B;
         if(I.getZ() > 255)
             B = 255;
         else
-            B = (int) Math.round(I.getZ());
+            B = (int) Math.floor(I.getZ());
 
        // I.printPoint();
         ctx.setFill(Color.rgb(R, G, B));

@@ -32,4 +32,8 @@ public class Pixel {
     public int scalarProduct(Pixel v) {
         return this.x * v.x + this.y * v.y;
     }
+
+    public double norm() {
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+    }
 }
