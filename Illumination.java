@@ -43,7 +43,7 @@ public class Illumination {
                 L = this.lightPosition.subtract(point).normalize();
 
                 if(V.scalarProduct(N) < 0)
-                    N.multiply(-1);
+                    N = N.multiply(-1);
                 if(N.scalarProduct(L) < 0) {
                     hasDiffuseComponent = false;
                     hasSpecularComponent = false;
@@ -72,9 +72,9 @@ public class Illumination {
 
     public Point ambientalComponent() {
         return new Point(
-            this.ambientalVector.getX() * this.ambientalConstant * this.diffuseVector.getX(),
-            this.ambientalVector.getY() * this.ambientalConstant * this.diffuseVector.getY(),
-            this.ambientalVector.getZ() * this.ambientalConstant * this.diffuseVector.getZ()
+            this.ambientalVector.getX() * this.ambientalConstant,
+            this.ambientalVector.getY() * this.ambientalConstant,
+            this.ambientalVector.getZ() * this.ambientalConstant
         );
     }
 
@@ -101,19 +101,19 @@ public class Illumination {
         if(I.getX() > 255)
             R = 255;
         else
-            R = (int) I.getX();
+            R = (int) Math.round(I.getX());
 
         int G;
         if(I.getY() > 255)
             G = 255;
         else
-            G = (int) I.getY();
+            G = (int) Math.round(I.getY());
 
         int B;
         if(I.getZ() > 255)
             B = 255;
         else
-            B = (int) I.getZ();
+            B = (int) Math.round(I.getZ());
 
        // I.printPoint();
         ctx.setFill(Color.rgb(R, G, B));

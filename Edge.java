@@ -30,9 +30,9 @@ public class Edge {
 
     public void increaseX() {
         if(this.dx > 0)
-            this.x += (int) Math.ceil(this.dx);
+            this.x += (int) Math.round(this.dx);
         else
-            this.x += (int) Math.floor(this.dx); 
+            this.x += (int) Math.round(this.dx); 
     }
 
     public void printEdge() {

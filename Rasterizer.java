@@ -22,7 +22,7 @@ public class Rasterizer {
         for (int i = 0; i <= range; i++) {
             
             this.update(activeEdgeTable, i + vertices[0].getY());
-            this.append(activeEdgeTable, edgeTable[i], i);
+            this.append(activeEdgeTable, edgeTable[i], pixels);
             this.sortAET(activeEdgeTable);
             pixels.addAll(this.retrievePixels(activeEdgeTable, i + vertices[0].getY()));
             
@@ -32,6 +32,7 @@ public class Rasterizer {
     }
 
     public void update(Vector<Edge> AET, int scanline) {
+ 
         for (int i = 0; i < AET.size(); i++) {
 
             /* Geometric Coherence: */
@@ -44,9 +45,20 @@ public class Rasterizer {
         }
     }
 
-    public void append(Vector<Edge> AET, Vector<Edge> ET, int i) {
-        if(ET != null) 
+    public void append(Vector<Edge> AET, Vector<Edge> ET, Vector<Pixel> pixels) {
+        if(ET != null) {
+
+            // Tratando arestas horizontais.
+            for (int i = 0; i < ET.size(); i++) 
+                if(ET.get(i).getDx() == Double.POSITIVE_INFINITY) {
+                    Vector<Edge> horizontal = new Vector<Edge>();
+                    horizontal.add(ET.get(i));
+                    pixels.addAll(this.retrievePixels(horizontal, ET.get(i).getY()));
+                    ET.remove(i);
+                    i--;
+                }
             AET.addAll(ET);
+        }
     }
 
     public void sortAET(Vector<Edge> AET) {
@@ -64,6 +76,7 @@ public class Rasterizer {
     }
 
     public Vector<Pixel> retrievePixels(Vector<Edge> AET, int scanline) {
+
         Vector<Pixel> pixels = new Vector<Pixel>();
         if(!AET.isEmpty()) {
             int xMin = AET.firstElement().getX();
@@ -94,21 +107,38 @@ public class Rasterizer {
     }
 
     public Vector<Edge>[] initEdgeTable(Pixel[] vertices) {
-        Vector<Edge>[] ET = new Vector[vertices[2].getY() - vertices[0].getY() + 1];
+        Pixel v0 = vertices[0];
+        Pixel v1 = vertices[1];
+        Pixel v2 = vertices[2];
 
-        Edge v1v0 = new Edge(vertices[0].getX(), vertices[1].getY(), 
-            (double) (vertices[1].getX() - vertices[0].getX()) / (vertices[1].getY() - vertices[0].getY()));
-        Edge v2v1 = new Edge(vertices[1].getX(), vertices[2].getY(), 
-            (double) (vertices[2].getX() - vertices[1].getX()) / (vertices[2].getY() - vertices[1].getY()));
-        Edge v2v0 = new Edge(vertices[0].getX(), vertices[2].getY(), 
-            (double) (vertices[2].getX() - vertices[0].getX()) / (vertices[2].getY() - vertices[0].getY()));
+        Vector<Edge>[] ET = new Vector[v2.getY() - v0.getY() + 1];
+ 
+        Edge v1v0, v2v1, v2v0;
+        if(v1.getY() == v0.getY()) // Se a aresta for horizontal;
+            v1v0 = new Edge(v0.getX(), v1.getY(), Double.POSITIVE_INFINITY);
+        else
+            v1v0 = new Edge(v0.getX(), v1.getY(), (double) (v1.getX() - v0.getX()) / (v1.getY() - v0.getY()));
+
+        if(v2.getY() == v1.getY()) // Se a aresta for horizontal;
+            v2v1 = new Edge(v1.getX(), v2.getY(), Double.POSITIVE_INFINITY);
+        else
+            v2v1 = new Edge(v1.getX(), v2.getY(), (double) (v2.getX() - v1.getX()) / (v2.getY() - v1.getY()));
+
+        if(v2.getY() == v0.getY()) // Se a aresta for horizontal;
+            v2v0 = new Edge(v0.getX(), v2.getY(), Double.POSITIVE_INFINITY);
+        else
+            v2v0 = new Edge(v0.getX(), v2.getY(), (double) (v2.getX() - v0.getX()) / (v2.getY() - v0.getY()));
         
-        int range = vertices[0].getY();
-        ET[vertices[0].getY() - range] = new Vector<Edge>();
-        ET[vertices[0].getY() - range].add(v1v0);
-        ET[vertices[0].getY() - range].add(v2v0);
-        ET[vertices[1].getY() - range] = new Vector<Edge>();
-        ET[vertices[1].getY() - range].add(v2v1);
+        int range = v0.getY();
+        ET[v0.getY() - range] = new Vector<Edge>();
+        ET[v0.getY() - range].add(v1v0);
+        ET[v0.getY() - range].add(v2v0);
+        if(v1.getY() == v0.getY())
+            ET[v1.getY() - range].add(v2v1);
+        else {
+            ET[v1.getY() - range] = new Vector<Edge>();
+            ET[v1.getY() - range].add(v2v1);
+        }
         return ET;
     }
 }

@@ -69,7 +69,7 @@ public class Main extends Application {
     }
 
     public double[][] initializeZBuffer() {
-        double[][] buffer = new double[(int) screenWidth][(int) screenHeight];
+        double[][] buffer = new double[(int) Math.round(screenWidth)][(int) Math.round(screenHeight)];
         for (int i = 0; i < buffer.length; i++)
             for (int j = 0; j < buffer[i].length; j++) 
                 buffer[i][j] = Double.MAX_VALUE;
