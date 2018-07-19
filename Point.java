@@ -10,6 +10,7 @@ public class Point {
     private double z_normal;
 
     private int numTriangles;
+    private boolean normalized;
     
     public Point(double x, double y, double z) {
         this.x = x;
@@ -19,6 +20,7 @@ public class Point {
         this.y_normal = 0;
         this.z_normal = 0;
         this.numTriangles = 0;
+        this.normalized = false;
     }
 
     public void printPoint() {
@@ -90,6 +92,7 @@ public class Point {
         this.x_normal = normal.getX();
         this.y_normal = normal.getY();
         this.z_normal = normal.getZ();
+        this.normalized = true;
     }
 
     /* Getters & Setters */
@@ -107,5 +110,9 @@ public class Point {
 
     public Point getNormal() {
         return new Point(this.x_normal, this.y_normal, this.z_normal);
+    }
+
+    public boolean isNormalized() {
+        return normalized;
     }
 }

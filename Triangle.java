@@ -18,7 +18,7 @@ public class Triangle {
     public void calculateNormal() {
         Point v1v0 = this.vertices[1].subtract(this.vertices[0]);
         Point v2v0 = this.vertices[2].subtract(this.vertices[0]);
-        Point normal = v1v0.vectorProduct(v2v0).normalize();
+        Point normal = v2v0.vectorProduct(v1v0).normalize();
 
         this.x_normal = normal.getX();
         this.y_normal = normal.getY();
@@ -33,7 +33,8 @@ public class Triangle {
 
     public void normalizeNormal() {
         for (int i = 0; i < this.vertices.length; i++) {
-            this.vertices[i].normalizeNormal();
+            if(!this.vertices[i].isNormalized())
+                this.vertices[i].normalizeNormal();
         }
     }
 
@@ -42,7 +43,7 @@ public class Triangle {
         for (int i = 0; i < this.vertices.length; i++) {
             double x = (d/hx * vertices[i].getX()/vertices[i].getZ());
             double y = (d/hy * vertices[i].getY()/vertices[i].getZ());  
-            projectedVertices[i] = new Pixel((int) ((x + 1) * width / 2), (int) ((1 - y) * height / 2));
+            projectedVertices[i] = new Pixel((int) Math.round((x + 1) * width / 2), (int) Math.round((1 - y) * height / 2));
         }
         return projectedVertices;
     }
@@ -53,7 +54,7 @@ public class Triangle {
         /* Triângulo. */
         Pixel v0v1 = vertices[1].subtract(vertices[0]);
         Pixel v0v2 = vertices[2].subtract(vertices[0]);
-        double area = v0v1.calculateArea(v0v2);
+        double area = v0v2.calculateArea(v0v1);
  
         /* Alfa. */
         Pixel bp = pixel.subtract(vertices[1]);
@@ -68,7 +69,7 @@ public class Triangle {
         /* Gama. */
         double abpArea = 1 - pbcArea - apcArea;
         
-        //System.out.println(area);
+    //    System.out.println(area);
         return new double[] { pbcArea, apcArea, abpArea };        
     }
 
@@ -79,6 +80,13 @@ public class Triangle {
     }
 
     public Point approximateNormal(double[] coordinates) {
+        // this.vertices[0].getNormal().printPoint();
+        // this.vertices[1].getNormal().printPoint();
+        // this.vertices[2].getNormal().printPoint();
+        // for (int i = 0; i < coordinates.length; i++) {
+        //     System.out.print(coordinates[i] + " ");
+        // }
+        // System.exit(1);
         return this.vertices[0].getNormal().multiply(coordinates[0])
             .add(this.vertices[1].getNormal().multiply(coordinates[1]))
             .add(this.vertices[2].getNormal().multiply(coordinates[2]));
@@ -92,23 +100,27 @@ public class Triangle {
                     return -1;
                 else if(a.getY() > b.getY())
                     return 1;
+                else if(a.getX() < b.getX())
+                    return -1;
                 else
-                    return 0;
+                    return 1;
             }
         });
 
-        Arrays.sort(vertices, new Comparator<Pixel>() {
+        Pixel[] p = new Pixel[] {vertices[1], vertices[2]};
+        Arrays.sort(p, new Comparator<Pixel>() {
             @Override
             public int compare(Pixel a, Pixel b) {
-                if(b.equals(vertices[0]))
-                    return 1;
-                else if(a.getX() < b.getX())
+                if(a.getX() < b.getX())
                     return -1;
-                else if(a.getX() > b.getX())
-                    return 1;
+                else if(a.getY() < b.getY())
+                    return -1;
                 else
-                    return 0;
+                    return 1;
             }
         });
+
+        vertices[1] = p[0];
+        vertices[2] = p[1];
     }
 }
