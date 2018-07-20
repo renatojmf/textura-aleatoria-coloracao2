@@ -29,6 +29,10 @@ public class Pixel {
         return this.x * v.y - this.y * v.x;
     }
 
+    public Point vectorProduct(Pixel v) {
+        return new Point(0, 0, this.x * v.y - this.y * v.x);
+    }
+
     public int scalarProduct(Pixel v) {
         return this.x * v.x + this.y * v.y;
     }

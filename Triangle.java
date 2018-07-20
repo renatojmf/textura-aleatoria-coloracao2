@@ -16,6 +16,7 @@ public class Triangle {
     }
 
     public void calculateNormal() {
+       // sortVertices();
         Point v1v0 = this.vertices[1].subtract(this.vertices[0]);
         Point v2v0 = this.vertices[2].subtract(this.vertices[0]);
         Point normal = v1v0.vectorProduct(v2v0).normalize();
@@ -51,28 +52,29 @@ public class Triangle {
     public double[] resolve(Pixel pixel, Pixel[] vertices) {
         sortVertices(vertices);
 
+        Point normal = new Point(x_normal, y_normal, z_normal);
+
         /* Triângulo. */
         Pixel v0v1 = vertices[1].subtract(vertices[0]);
         Pixel v0v2 = vertices[2].subtract(vertices[0]);
-        double area = v0v2.calculateArea(v0v1);
+        double area = normal.scalarProduct(v0v1.vectorProduct(v0v2));
     
         /* Alfa. */
-        Pixel bp = pixel.subtract(vertices[1]);
-        Pixel bc = vertices[2].subtract(vertices[1]);
-        double pbcArea = bp.calculateArea(bc) / area;
+        Pixel pb = vertices[1].subtract(pixel);
+        Pixel pc = vertices[2].subtract(pixel);
+        double pbcArea = normal.scalarProduct(pb.vectorProduct(pc)) / area;
 
         /* Beta. */
-        Pixel ap = pixel.subtract(vertices[0]);
-        Pixel ac = vertices[2].subtract(vertices[0]);
-        double apcArea = ac.calculateArea(ap) / area;
+        Pixel pa = vertices[0].subtract(pixel);
+        double apcArea = normal.scalarProduct(pc.vectorProduct(pa)) / area;
 
         /* Gama. */
         double abpArea = 1 - pbcArea - apcArea;
-        
         return new double[] { pbcArea, apcArea, abpArea };        
     }
 
     public Point approximate(double[] coordinates) {
+        sortVertices();
         return this.vertices[0].multiply(coordinates[0])
             .add(this.vertices[1].multiply(coordinates[1]))
             .add(this.vertices[2].multiply(coordinates[2]));
@@ -89,9 +91,9 @@ public class Triangle {
             @Override
             public int compare(Pixel a, Pixel b) {
                 if(a.getY() < b.getY())
-                    return -1;
-                else if(a.getY() > b.getY())
                     return 1;
+                else if(a.getY() > b.getY())
+                    return -1;
                 else if(a.getX() < b.getX())
                     return -1;
                 else
@@ -105,8 +107,40 @@ public class Triangle {
             public int compare(Pixel a, Pixel b) {
                 if(a.getX() < b.getX())
                     return -1;
-                else if(a.getY() < b.getY())
+                // else if(a.getY() < b.getY())
+                //     return -1;
+                else
+                    return 1;
+            }
+        });
+
+        vertices[1] = p[0];
+        vertices[2] = p[1];
+    }
+
+    public void sortVertices() {
+        Arrays.sort(this.vertices, new Comparator<Point>() {
+            @Override
+            public int compare(Point a, Point b) {
+                if(a.getY() < b.getY())
                     return -1;
+                else if(a.getY() > b.getY())
+                    return 1;
+                else if(a.getX() < b.getX())
+                    return 1;
+                else
+                    return -1;
+            }
+        });
+
+        Point[] p = new Point[] {this.vertices[1], this.vertices[2]};
+        Arrays.sort(p, new Comparator<Point>() {
+            @Override
+            public int compare(Point a, Point b) {
+                if(a.getX() < b.getX())
+                    return -1;
+                else if(a.getY() < b.getY())
+                    return 1;
                 else
                     return 1;
             }

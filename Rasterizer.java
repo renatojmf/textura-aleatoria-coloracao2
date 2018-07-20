@@ -89,7 +89,7 @@ public class Rasterizer {
         double xMin = v3.getX();
         double xMax = v3.getX();
 
-        for (int i = v3.getY(); i >= v1.getY(); i--) {
+        for (int i = v3.getY(); i > v1.getY(); i--) {
             for (int j = (int) Math.round(xMin); j < (int) Math.round(xMax); j++) {
                 pixels.add(new Pixel(j, i));
         //        pixels.lastElement().printPoint();
