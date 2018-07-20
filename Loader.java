@@ -15,7 +15,7 @@ public class Loader {
         this.objectPath = objectPath;
     }
 
-    public Illumination loadScene(double[][] worldToView, Point C) {
+    public Illumination loadScene(double[][] worldToView, Point C, double f, boolean R, boolean G, boolean B) {
         try {
             Scanner file = new Scanner(new File(this.scenePath));
             file.useLocale(Locale.US);
@@ -31,7 +31,7 @@ public class Loader {
             file.close();
 
             System.out.println("Arquivo de cena carregado.");
-            return new Illumination(coordinates.subtract(C).multiply(worldToView), ka, Ia, kd, Od, ks, Il, n);
+            return new Illumination(coordinates.subtract(C).multiply(worldToView), ka, Ia, kd, Od, ks, Il, n, f, R, G, B);
         } catch (FileNotFoundException e) {
             System.out.println("Arquivo de cena NAO carregado!");
             return null;

@@ -1,3 +1,5 @@
+import java.util.Random;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -12,7 +14,14 @@ public class Illumination {
     private double specularConstant;
     private double rugosityConstant;
 
-    public Illumination(Point coordinates, double ka, Point Ia, double kd, Point Od, double ks, Point Il, double n) {
+    private double randomnessFactor;
+    private boolean RChannel;
+    private boolean GChannel;
+    private boolean BChannel;
+
+    public Illumination(Point coordinates, double ka, Point Ia, double kd, Point Od, double ks, Point Il, double n,
+        double randomnessFactor, boolean RChannel, boolean GChannel, boolean BChannel) {
+       
         this.lightPosition = coordinates;
         this.ambientalConstant = ka;
         this.ambientalVector = Ia;
@@ -21,6 +30,10 @@ public class Illumination {
         this.specularConstant = ks;
         this.lightIntensity = Il;
         this.rugosityConstant = n;
+        this.randomnessFactor = randomnessFactor;
+        this.RChannel = RChannel;
+        this.GChannel = GChannel;
+        this.BChannel = BChannel;
     }
 
     public void illuminate(Pixel pixel, Point point, Point normal, GraphicsContext ctx,
@@ -79,11 +92,22 @@ public class Illumination {
     }
 
     public Point diffuseComponent(Point N, Point L) {
+        Random rand = new Random();
+        double atenuation = (randomnessFactor) * rand.nextDouble() + (1 - randomnessFactor);
+
+        double RRandomized = this.diffuseVector.getX(), GRandomized = this.diffuseVector.getY(), BRandomized = this.diffuseVector.getZ();
+        if(RChannel)
+            RRandomized = this.diffuseVector.getX() * atenuation;
+        if(GChannel)
+            GRandomized = this.diffuseVector.getY() * atenuation;
+        if(BChannel)
+            BRandomized = this.diffuseVector.getY() * atenuation;
+
         double scalar = N.scalarProduct(L);
         return new Point(
-            this.lightIntensity.getX() * this.diffuseVector.getX() * this.diffuseConstant * scalar,
-            this.lightIntensity.getY() * this.diffuseVector.getY() * this.diffuseConstant * scalar,
-            this.lightIntensity.getZ() * this.diffuseVector.getZ() * this.diffuseConstant * scalar
+            this.lightIntensity.getX() * RRandomized * this.diffuseConstant * scalar,
+            this.lightIntensity.getY() * GRandomized * this.diffuseConstant * scalar,
+            this.lightIntensity.getZ() * BRandomized * this.diffuseConstant * scalar
         );
     }
 

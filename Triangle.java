@@ -43,7 +43,7 @@ public class Triangle {
         for (int i = 0; i < this.vertices.length; i++) {
             double x = (d/hx * vertices[i].getX()/vertices[i].getZ());
             double y = (d/hy * vertices[i].getY()/vertices[i].getZ());  
-            projectedVertices[i] = new Pixel((int) Math.floor((x + 1) * width / 2), (int) Math.floor((1 - y) * height / 2));
+            projectedVertices[i] = new Pixel((int) Math.round((x + 1) * width / 2), (int) Math.round((1 - y) * height / 2));
         }
         return projectedVertices;
     }
@@ -55,7 +55,7 @@ public class Triangle {
         Pixel v0v1 = vertices[1].subtract(vertices[0]);
         Pixel v0v2 = vertices[2].subtract(vertices[0]);
         double area = v0v2.calculateArea(v0v1);
- 
+    
         /* Alfa. */
         Pixel bp = pixel.subtract(vertices[1]);
         Pixel bc = vertices[2].subtract(vertices[1]);
