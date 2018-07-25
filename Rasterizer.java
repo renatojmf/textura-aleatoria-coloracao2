@@ -23,24 +23,24 @@ public class Rasterizer {
         // vertices[2].printPoint();
         // System.out.println();
 
-        // O triângulo possui uma base reta.
+        // O triÃ¢ngulo possui uma base reta.
         if(vertices[1].getY() == vertices[2].getY())
             if(vertices[1].getX() < vertices[2].getX())
                 topDownScanline(vertices[0], vertices[1], vertices[2], ctx);
             else
                 topDownScanline(vertices[0], vertices[2], vertices[1], ctx);
         
-        // O triângulo possui uma base reta, mas invertida.
+        // O triÃ¢ngulo possui uma base reta, mas invertida.
         else if(vertices[0].getY() == vertices[1].getY())
             if(vertices[0].getX() < vertices[1].getX())
                 bottomUpScanline(vertices[0], vertices[1], vertices[2], ctx);
             else
                 bottomUpScanline(vertices[1], vertices[0], vertices[2], ctx);
 
-        // O triângulo possui um vértice intermediário.
+        // O triÃ¢ngulo possui um vÃ©rtice intermediÃ¡rio.
         else {
 
-            // Semelhança de triângulos.
+            // SemelhanÃ§a de triÃ¢ngulos.
             int x = (int) Math.round(vertices[0].getX() + ((double) (vertices[1].getY() - vertices[0].getY()) / (double) (vertices[2].getY() - vertices[0].getY())) * (vertices[2].getX() - vertices[0].getX()));
             int y = vertices[1].getY();
 
@@ -66,7 +66,7 @@ public class Rasterizer {
         double xMax = v1.getX();
 
         for (int i = v1.getY(); i <= v2.getY(); i++) {
-            for (int j = (int) Math.round(xMin); j < (int) Math.round(xMax); j++) {
+            for (int j = (int) Math.round(xMin); j <= (int) Math.round(xMax); j++) {
                 pixels.add(new Pixel(j, i));
             }
 
@@ -89,8 +89,8 @@ public class Rasterizer {
         double xMin = v3.getX();
         double xMax = v3.getX();
 
-        for (int i = v3.getY(); i > v1.getY(); i--) {
-            for (int j = (int) Math.round(xMin); j < (int) Math.round(xMax); j++) {
+        for (int i = v3.getY(); i >= v1.getY(); i--) {
+            for (int j = (int) Math.round(xMin); j <= (int) Math.round(xMax); j++) {
                 pixels.add(new Pixel(j, i));
         //        pixels.lastElement().printPoint();
             }
